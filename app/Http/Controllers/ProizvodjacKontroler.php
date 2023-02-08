@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Proizvodjac;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class ProizvodjacKontroler extends Controller
 {
@@ -14,7 +16,11 @@ class ProizvodjacKontroler extends Controller
      */
     public function index()
     {
-        //
+        $proizvodjaci = DB::table('proizvodjacs')->get();
+
+        return response()->json([
+            'Message' => $proizvodjaci
+        ]);
     }
 
     /**
@@ -35,7 +41,27 @@ class ProizvodjacKontroler extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'naziv' => 'required',
+            'adresa' => 'required',
+            'email' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'Message' => $validator->errors()
+            ]);
+        }
+
+        DB::table('proizvodjacs')->insert([
+            'naziv' => $request->naziv,
+            'adresa' => $request->adresa,
+            'email' => $request->email,
+        ]);
+
+        return response()->json([
+            'Message' => 'Successfully saved'
+        ]);
     }
 
     /**
@@ -78,8 +104,12 @@ class ProizvodjacKontroler extends Controller
      * @param  \App\Models\Proizvodjac  $proizvodjac
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Proizvodjac $proizvodjac)
+    public function destroy($id)
     {
-        //
+        DB::table('proizvodjacs')->where('id', '=', $id)->delete();
+
+        return response()->json([
+            'Message' => 'Successfully deleted'
+        ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Proizvod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProizvodKontroler extends Controller
 {
@@ -14,7 +15,11 @@ class ProizvodKontroler extends Controller
      */
     public function index()
     {
-        //
+        $proizvodi = DB::table('proizvods')->get();
+
+        return response()->json([
+            'Message' => $proizvodi
+        ]);
     }
 
     /**
@@ -44,9 +49,13 @@ class ProizvodKontroler extends Controller
      * @param  \App\Models\Proizvod  $proizvod
      * @return \Illuminate\Http\Response
      */
-    public function show(Proizvod $proizvod)
+    public function show($id)
     {
-        //
+        $proizvod = DB::table('proizvods')->where('id', '=', $id)->first();
+
+        return response()->json([
+            'Message' => $proizvod
+        ]);
     }
 
     /**
@@ -78,8 +87,12 @@ class ProizvodKontroler extends Controller
      * @param  \App\Models\Proizvod  $proizvod
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Proizvod $proizvod)
+    public function destroy($id)
     {
-        //
+        DB::table('proizvods')->where('id', '=', $id)->delete();
+
+        return response()->json([
+            'Message' => 'Successfully deleted'
+        ]);
     }
 }

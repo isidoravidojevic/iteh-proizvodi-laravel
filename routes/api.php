@@ -18,7 +18,7 @@ use App\Http\Controllers\ProizvodKontroler;
 
 Route::post('proizvodjac', [ProizvodjacKontroler::class, 'store']);
 Route::get('proizvodjac', [ProizvodjacKontroler::class, 'index']);
-Route::delete('proizvodjac', [ProizvodjacKontroler::class, 'destroy']);
+Route::delete('proizvodjac/{id}', [ProizvodjacKontroler::class, 'destroy']);
 Route::get('proizvod', [ProizvodKontroler::class, 'index']);
 Route::get('proizvod/{id}', [ProizvodKontroler::class, 'show']);
 Route::delete('proizvod/{id}', [ProizvodKontroler::class, 'destroy']);
